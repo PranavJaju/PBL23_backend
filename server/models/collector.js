@@ -1,5 +1,6 @@
 const { error } = require("console");
 const mongoose = require("mongoose")
+const validator = require("validator")
 const collectorSchema = mongoose.Schema({
     name:{
         type:String,

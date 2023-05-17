@@ -82,4 +82,33 @@ const Search = async(req,res)=>{
         res.send(err);
     }
 }
-module.exports = {SignUp,SignIn,DonateFood,SeeItems,Search};
+
+const UpdateFood = async(req,res)=>{
+    try{
+        const id = req.params.id;
+        const Items = await Food.findByIdAndUpdate({_id:id},req.body,{new:true});
+        res.send(Items);
+
+    }catch(err){
+        res.send(err);
+    }
+}
+
+const DeleteFood = async(req,res)=>{
+    try{
+        const id = req.params.id;
+        const Items = await Food.findByIdAndDelete({_id:id},req.body,{new:true});
+        res.send(Items);
+
+    }catch(err){
+        res.send(err);
+    }
+}
+
+const expiry = async(req,res)=>{
+    try{
+        const Items = await Food.find({providerId:req.user._id,expiryDate:{$lte : Date.now()}});
+        res.send(Items);
+    }catch(err){res.send(err);}
+}
+module.exports = {SignUp,SignIn,DonateFood,SeeItems,Search,UpdateFood,DeleteFood,expiry};

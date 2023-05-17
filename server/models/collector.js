@@ -40,7 +40,7 @@ const collectorSchema = mongoose.Schema({
 })
 collectorSchema.methods.generateAuthToken = async function(){
     try{
-        const token = jwt.sign({_id:this._id},"thisIsOurPBLProjectFoodManagementSystem");
+        const token = jwt.sign({_id:this._id},process.env.JWT_KEY);
         this.tokens = this.tokens.concat({token:token});
         await this.save;
         return token;

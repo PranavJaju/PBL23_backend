@@ -1,4 +1,5 @@
 const Provider = require("../models/provider");
+const Food = require("../models/food");
 const SignUp = async(req,res)=>{
     try{
         const {name,email,password,mobile,address} = req.body;
@@ -45,6 +46,40 @@ const SignIn = async(req,res)=>{
     }catch(err){res.send(err)}
 }
 const DonateFood = async(req,res)=>{
-    try{}catch(err){res.send(err)};
+    try{
+        const {name,quantity,tag,expiryDate} = req.body;
+        if(!name || !quantity || !tag || !expiryDate){
+            res.send("Please fill all the fields");
+        }
+        else{
+            const AddItem  = new Food({
+                name,quantity,expiryDate,tag,
+                providerId:req.user._id
+            })
+            const saveItem = await AddItem.save();
+            res.send(saveItem);
+        }
+
+    }catch(err){res.send(err)};
 }
-module.exports = {SignUp,SignIn};
+
+const SeeItems = async(req,res)=>{
+    try{
+        const Items = await Food.find({providerId:req.user._id});
+        res.send(Items);
+    }catch(err){
+        res.send(err);
+    }
+}
+
+const Search = async(req,res)=>{
+    try{
+      const name = req.params.name;
+      const Items = await Food.find({name,providerId:req.user._id});
+      res.send(Items);
+
+    }catch(err){
+        res.send(err);
+    }
+}
+module.exports = {SignUp,SignIn,DonateFood,SeeItems,Search};

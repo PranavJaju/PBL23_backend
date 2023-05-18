@@ -40,5 +40,13 @@ const signin = async(req,res)=>{
         res.send(err);
     }
 }
-
+const search = async(req,res)=>{
+    try {
+        const name = req.params.name;
+        const tag = req.params.name;
+        // const find = await  
+    } catch (error) {
+        res.send(error);
+    }
+}
 module.exports = {signup,signin};

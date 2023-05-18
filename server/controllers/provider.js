@@ -111,4 +111,22 @@ const expiry = async(req,res)=>{
         res.send(Items);
     }catch(err){res.send(err);}
 }
-module.exports = {SignUp,SignIn,DonateFood,SeeItems,Search,UpdateFood,DeleteFood,expiry};
+
+const ViewOthers = async(req,res)=>{
+    try{
+        const name = req.params.name;
+        const Items = await Food.find({name,providerId:{$ne:req.user._id}});
+        res.send(Items);
+    }catch(err){res.send(err);}
+}
+const SignOut = async(req,res)=>{
+    try {
+        res.clearCookie('jwt');
+        console.log("This is to be done");
+
+    } catch (error) {
+        
+    }
+}
+
+module.exports = {SignUp,SignIn,DonateFood,SeeItems,Search,UpdateFood,DeleteFood,expiry,ViewOthers};

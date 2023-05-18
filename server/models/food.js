@@ -22,7 +22,7 @@ const foodSchema = mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"Provider"
     }
-
+    
 })
 const Food = mongoose.model("Food",foodSchema);
 module.exports = Food;

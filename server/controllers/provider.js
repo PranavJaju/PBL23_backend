@@ -10,14 +10,15 @@ const SignUp = async(req,res)=>{
             name,email,mobile,address,password,
             location:{
                 type:"Point",
-                coordinates: [parseFloat(req.body.lat),parseFloat(req.body.long)],
+                coordinates: [req.body.latitude,req.body.longitude],
             }
         })
+        console.log("hello");
         const SaveProvider = await NewProvider.save();
         const token = await SaveProvider.generateAuthToken();
         console.log(token);
         res.send(SaveProvider);
-    }catch(err){res.status(500).send(err)}
+    }catch(err){res.status(500).send(err);console.log(err);}
 }
 
 const SignIn = async(req,res)=>{

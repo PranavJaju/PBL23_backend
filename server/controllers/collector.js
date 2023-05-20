@@ -1,11 +1,13 @@
-const Collector = require("../models/collector")
+const Collector = require("../models/collector");
+const Food = require("../models/food");
+const Provider = require("../models/provider");
 const signup = async(req,res)=>{
     try{
         const NewCollector = new Collector({
             name: req.body.name,
             email: req.body.email,
-            mobile: req.body.number,
-            password: req.body.pass
+            mobile: req.body.mobile,
+            password: req.body.password
             
         })
         const CollectorCreated = await NewCollector.save();
@@ -44,9 +46,49 @@ const search = async(req,res)=>{
     try {
         const name = req.params.name;
         const tag = req.params.name;
-        // const find = await  
+        const findFood = await Food.find({$or:[{name},{tag}]}).populate("providerId","-password");
+        const pointLat = req.body.latitude;
+        const pointLong =req.body.longitude;
+        // console.log(findFood[0].providerId.location.coordinates[0]);
+        findFood.sort((seller1, seller2) => {
+            console.log(seller2);
+            const lat1 = seller1.providerId.location.coordinates[0];
+            const long1 = seller1.providerId.location.coordinates[1];
+            const lat2 = seller2.providerId.location.coordinates[0];
+            const long2 = seller2.providerId.location.coordinates[1];
+        
+            // Calculate the distance between each seller's location and the particular point using the Haversine formula
+            const distance1 = getDistanceFromLatLonInKm(lat1, long1, pointLat, pointLong);
+            const distance2 = getDistanceFromLatLonInKm(lat2, long2, pointLat, pointLong);
+            // if (distance1 > 5 || distance2 > 5) {
+            //     return 0;
+            // }
+        
+            return distance1 - distance2;
+        });
+        
+        
+        // Function to calculate the distance between two points using the Haversine formula
+        function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radius of the earth in km
+            const dLat = deg2rad(lat2 - lat1);
+            const dLon = deg2rad(lon2 - lon1);
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const d = R * c; // Distance in km
+            return d;
+        }
+        
+        // Function to convert degrees to radians
+        function deg2rad(deg) {
+            return deg * (Math.PI / 180);
+        }
+       res.send(findFood);
+
     } catch (error) {
         res.send(error);
     }
 }
-module.exports = {signup,signin};
+module.exports = {signup,signin,search};

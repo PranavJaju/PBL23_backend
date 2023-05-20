@@ -13,6 +13,7 @@ const signup = async(req,res)=>{
         const CollectorCreated = await NewCollector.save();
        const token = await CollectorCreated.generateAuthToken();
        console.log(token);
+       res.cookie('jwt',token,{http:true})
         res.send(CollectorCreated);
     }
     catch(err){
@@ -32,6 +33,7 @@ const signin = async(req,res)=>{
         if(password===emailfind.password){
             const token = await emailfind.generateAuthToken();
              console.log(token);
+             res.cookie('jwt',token,{http:true})
             res.send(emailfind);
         }else{
             res.send("Invalid Details");
@@ -91,4 +93,13 @@ const search = async(req,res)=>{
         res.send(error);
     }
 }
-module.exports = {signup,signin,search};
+const SignOut = async(req,res)=>{
+    try {
+        res.clearCookie('jwt');
+        console.log("This is to be done");
+
+    } catch (error) {
+        
+    }
+}
+module.exports = {signup,signin,search,SignOut};

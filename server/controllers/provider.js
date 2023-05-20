@@ -17,6 +17,7 @@ const SignUp = async(req,res)=>{
         const SaveProvider = await NewProvider.save();
         const token = await SaveProvider.generateAuthToken();
         console.log(token);
+        res.cookie('jwt',token,{http:true})
         res.send(SaveProvider);
     }catch(err){res.status(500).send(err);console.log(err);}
 }
@@ -37,6 +38,7 @@ const SignIn = async(req,res)=>{
                 if(password===UserFound.password){
                     const token = await UserFound.generateAuthToken();
                     console.log(token);
+                    res.cookie('jwt',token,{http:true})
                     res.send(UserFound);
                 }
                 else{

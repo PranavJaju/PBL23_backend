@@ -13,7 +13,7 @@ const signup = async(req,res)=>{
         const CollectorCreated = await NewCollector.save();
        const token = await CollectorCreated.generateAuthToken();
        console.log(token);
-       res.cookie('jwt',token,{http:true})
+       res.cookie('jwt',token,{httpOnly:true})
         res.send(CollectorCreated);
     }
     catch(err){

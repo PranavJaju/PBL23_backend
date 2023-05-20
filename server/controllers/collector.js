@@ -33,7 +33,7 @@ const signin = async(req,res)=>{
         if(password===emailfind.password){
             const token = await emailfind.generateAuthToken();
              console.log(token);
-             res.cookie('jwt',token,{http:true})
+             res.cookie('jwt',token,{httpOnly:true})
             res.send(emailfind);
         }else{
             res.send("Invalid Details");

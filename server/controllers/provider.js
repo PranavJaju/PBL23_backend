@@ -100,7 +100,7 @@ const UpdateFood = async(req,res)=>{
 const DeleteFood = async(req,res)=>{
     try{
         const id = req.params.id;
-        const Items = await Food.findByIdAndDelete({_id:id},req.body,{new:true});
+        const Items = await Food.findByIdAndDelete({_id:id},{new:true});
         res.send(Items);
 
     }catch(err){

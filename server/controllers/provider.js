@@ -68,7 +68,7 @@ const DonateFood = async(req,res)=>{
 
 const SeeItems = async(req,res)=>{
     try{
-        const Items = await Food.find({providerId:req.user._id});
+        const Items = await Food.find({providerId:req.user._id,expiryDate:{$gte : Date.now()}});
         res.send(Items);
     }catch(err){
         res.send(err);

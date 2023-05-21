@@ -106,7 +106,7 @@ const SignOut = async(req,res)=>{
 const getall = async(req,res)=>{
     try {
         
-        const findFood = await Food.find().populate("providerId","-password");
+        const findFood = await Food.find({expiryDate:{$gte : Date.now()}}).populate("providerId","-password");
         const pointLat = req.body.latitude;
         const pointLong =req.body.longitude;
         // console.log(findFood[0].providerId.location.coordinates[0]);

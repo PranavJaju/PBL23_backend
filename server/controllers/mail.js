@@ -14,10 +14,14 @@ exports.sendMail = (req, res) => {
 
   // Define the email options
   const mailOptions = {
-    from: "piyush.agarwal24.pa@gmail.com", // Replace with your Gmail email address
+    from: "mihirdesh23@gmail.com", // Replace with your Gmail email address
     to: `${req.body.email}`, // Replace with recipient email address
     subject: "Welcome to FeedNeedy", // Replace with subject of your email
-    html: `<h4>Hello ${req.body.name}</h4><p>We are pleased to have you become a part of our family. Join us in bringing a smile to the faces of the underpriviled by active donation of food items.</p>`,
+    html: `<h4>Hello ${req.params.name}</h4><p>We would like to inform you that we have got a request for your food ${req.params.food}.
+    The Details of the Requestor is as follows: 
+    Name : ${req.user.name}
+    Mobile : ${req.user.mobile}
+    Email : ${req.user.email}</p>`
   };
 
   // Send the email

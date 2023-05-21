@@ -15,7 +15,7 @@ exports.sendMail = (req, res) => {
   // Define the email options
   const mailOptions = {
     from: "mihirdesh23@gmail.com", // Replace with your Gmail email address
-    to: `${req.body.email}`, // Replace with recipient email address
+    to: `${req.params.email}`, // Replace with recipient email address
     subject: "Welcome to FeedNeedy", // Replace with subject of your email
     html: `<h4>Hello ${req.params.name}</h4><p>We would like to inform you that we have got a request for your food ${req.params.food}.
     The Details of the Requestor is as follows: 

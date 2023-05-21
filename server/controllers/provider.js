@@ -68,7 +68,7 @@ const DonateFood = async(req,res)=>{
 
 const SeeItems = async(req,res)=>{
     try{
-        const Items = await Food.find({providerId:req.user._id,expiryDate:{$gte : Date.now()}});
+        const Items = await Food.find({providerId:req.user._id,expiryDate:{$gte : Date.now()}}).populate("providerId","-password");
         res.send(Items);
     }catch(err){
         res.send(err);
@@ -78,7 +78,7 @@ const SeeItems = async(req,res)=>{
 const Search = async(req,res)=>{
     try{
       const name = req.params.name;
-      const Items = await Food.find({name,providerId:req.user._id});
+      const Items = await Food.find({name,providerId:req.user._id}).populate("providerId","-password");
       res.send(Items);
 
     }catch(err){
